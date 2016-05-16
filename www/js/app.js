@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('vamrine', ['ionic', 'vamrine.controllers'])
+angular.module('vamrine', ['ionic', 'vamrine.controllers', 'vamrine.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -29,72 +29,65 @@ angular.module('vamrine', ['ionic', 'vamrine.controllers'])
 * Project.
 **/
 
-.factory('Projects', function(){
-  return {
-    all: function() {
-      var projectString = window.localStorage['projects'];
-      if(projectString){
-        return angular.fromJson(projectString);
-      }
-      return [];
-    },
+.config(function($stateProvider, $urlRouterProvider){
+  $stateProvider
 
-    save: function(projects){
-      console.log(angular.toJson(projects));
-      window.localStorage['projects'] = angular.toJson(projects);
-    },
-
-    // update: function(projects, index) {
-    //   console.log(window.localStorage['projects'].get(index));
-    //   window.localStorage.remove(index);
-    //   window.localStorage['projects'] = angular.toJson(projects);
-    // },
-    
-
-    newProject: function(projectTitle){
-      // Add a new project
-      return {
-        title: projectTitle,
-        tasks: []
-      };
-    },
-
-
-    getLastActiveindex: function() {
-      return parseInt(window.localStorage['lastActiveProject']) || 0;
-    },
-
-    setLastActiveIndex: function(index) {
-      window.localStorage['lastActiveProject'] = index;
-    },
-
-    remove: function(task){
-      var obj = JSON.parse(window.localStorage['projects']);
-      console.log("In remove: ",this.getLastActiveindex());
-      console.log("The removed task: ", task.title);
-      for (i in obj[this.getLastActiveindex()].tasks){
-        if (obj[this.getLastActiveindex()].tasks[i].title==task.title){
-          obj[this.getLastActiveindex()].tasks.splice(i,1);
-          console.log("in remove obj:",obj);
-          this.save(obj);
-        }
-      }
-    },
-  }
-})
-
-  .config(function($stateProvider, $urlRouterProvider){
-    $stateProvider
-
-    .state('index', {
-      url: "",
-      views: {
-        'index': {
-          templateUrl: 
-        }
-
-      }
-      )
-  }
+  .state('tab', {
+    cache: false,
+    url: "/tab",
+    templateUrl: 'templates/tabs.html',
+    abstract: true,
+    // controller: "TaskCtrl"
   })
+
+  // Each tab has its own nav history stack:
+
+  .state('tab.dash', {
+    cache: false,
+    url: '/dash',
+    views: {
+      'tab-dash': {
+        templateUrl: 'templates/tab-dash.html',
+        controller: 'DashCtrl'
+      }
+    }
+  })
+
+  .state('tab.projects', {
+    cache: false,
+    url: '/projects',
+    views: {
+      'tab-projects': {
+        templateUrl: 'templates/tab-projects.html',
+        controller: 'ProjectCtrl'
+      }
+    }
+  })
+
+  .state('tab.project-detail', {
+    cache: false,
+    url: '/projects/{title}',
+    views: {
+      'tab-projects': {
+        templateUrl: 'templates/project-detail.html',
+        controller: 'ProjectDetailCtrl'
+      }
+    }
+  })
+
+  .state('tab.account', {
+    url: '/account',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/tab-account.html',
+        controller: 'AccountCtrl'
+      }
+    }
+  });
+
+
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/tab/dash');
+
+});
 

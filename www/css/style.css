@@ -4,3 +4,7 @@
     transition: opacity 2s;
     opacity: 0;
 }
+
+.capitalize {
+	text-transform: capitalize;
+}

@@ -1,0 +1,19 @@
+<ion-view view-title="{{activeProject.title | capitalize:true}}">
+  <!-- <ion-header-bar class="bar-calm">
+    <h1 class="title">{{activeProject.title}}</h1>
+
+    <!-- New Task button -->
+    <button class="button button-icon" ng-click="newTask()"><i class="icon ion-compose"></i></button>
+  </ion-header-bar> -->
+  <ion-content>
+   <!--  <ion-list style="border-bottom: none;
+    padding: 0;">
+    <ion-item ng-repeat="task in activeProject.tasks" style=" margin: 0;
+    padding: 0;list-style: none; border-bottom: 1px;"> -->
+    <ion-list>
+      <ion-checkbox ng-repeat="task in activeProject.tasks" ng-model="task.checked" ng-checked="task.checked" ng-click="showPopup(task,$index)">
+      {{task.title}}
+    </ion-checkbox> 
+</ion-list>
+</ion-content>
+</ion-view>

@@ -1,0 +1,19 @@
+<ion-view view-title="Projects">
+  <ion-nav-buttons side="primary">
+    <button class="button button-icon ion-plus" ng-click="newProject()"></button>
+</ion-nav-buttons>
+<ion-content>
+  <ion-list>
+    <ion-item class="item item-icon-left item-icon-right" ng-repeat="project in projects" type="item-text-wrap" href="#/tab/projects/{{project.title}}">
+      <i class="icon ion-ios-list-outline"></i>
+      <h2>{{project.title | capitalize:true}}</h2>
+
+      <i class="icon ion-chevron-right icon-accessory"></i>
+
+      <ion-option-button class="button-assertive" ng-click="remove(project)">
+        Delete
+      </ion-option-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+</ion-view>
