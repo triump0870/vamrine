@@ -1,0 +1,22 @@
+
+<div class="modal">
+  <!-- Modal Header Bar -->
+  <ion-header-bar class="bar-secondary">
+    <h1 class="title">New Task</h1>
+    <button class="button button-clear button-calm" ng-click="closeNewTask()">Cancel</button>
+  </ion-header-bar>
+
+  <!-- Modal Content Area -->
+  <ion-content>
+    <form ng-submit="createTask(task)">
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="What do you need to do?" ng-model="task.title">
+        </label>
+      </div>
+      <div class="padding">
+        <button class="button button-block button-calm">Create Task</button>
+      </div>
+    </form>
+  </ion-content>
+</div>

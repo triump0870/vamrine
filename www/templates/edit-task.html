@@ -1,0 +1,21 @@
+<div class="modal">
+  <!-- Modal Header Bar -->
+  <ion-header-bar class="bar-secondary">
+    <h1 class="title">{{activeProject.title}}</h1>
+    <button class="button button-clear button-calm" ng-click="closeEditTask()">Cancel</button>
+  </ion-header-bar>
+
+  <!-- Modal Content Area -->
+  <ion-content>
+    <form ng-submit="saveTask(task)">
+      <div class="list">
+        <label class="item item-input item-placeholder">
+          <input type="text" placeholder="{{task.title}}" ng-model="task.title">
+        </label>
+      </div>
+      <div class="padding">
+        <button class="button button-block button-calm">Save Task</button>
+      </div>
+    </form>
+  </ion-content>
+</div>R

@@ -1,7 +1,7 @@
 {
   "name": "Vamrine",
-  "version": "1.0.2",
-  "description": "A Simple Task Management App",
+  "version": "1.0.4",
+  "description": "A Task Management App",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.rohanroy.vamrine" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.rohanroy.vamrine" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Vamrine</name>
   <description>
-    A Simple Task Management App
+    A Task Management App
   </description>
   <author email="rohan@rohanroy.com" href="http://rohanroy.com/">
     Rohan Roy
@@ -45,8 +45,6 @@
     <splash src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" height="1136"/>
     <splash src="resources/ios/splash/Default-667h.png" width="750" height="1334"/>
     <splash src="resources/ios/splash/Default-736h.png" width="1242" height="2208"/>
-    <splash src="resources/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
-    <splash src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
     <splash src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" height="768"/>
     <splash src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
     <splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
