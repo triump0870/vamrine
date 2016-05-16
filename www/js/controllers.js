@@ -17,53 +17,62 @@ angular.module("vamrine.controllers",[])
 
 .controller("ProjectCtrl", function($scope, Projects, $ionicLoading, $timeout, $ionicModal){
 
-$scope.loading = function() {
-	$ionicLoading.show({
-		template: '<p>Loading...</p><ion-spinner></ion-spinner>'
-	});
-};
+	$scope.loading = function() {
+		$ionicLoading.show({
+			template: '<ion-spinner icon="android" class="spinner-calm"></ion-spinner>',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 500,
+			showDelay: 100
+		});
+	};
 
-$scope.hide = function(){
-	$ionicLoading.hide();
-};
+	$scope.hide = function(){
+		$ionicLoading.hide();
+	};
 
 // 	console.log("activeProject: ", $scope.activeProject);
 var createProject = function(projectTitle){
 	var newProject = Projects.newProject(projectTitle);
 	$scope.projects.push(newProject);
 	Projects.save($scope.projects);
-		// $scope.selectProject(newProject, $scope.projects.length-1);
-	}
+}
 
-	$scope.projects = Projects.all();
+$scope.projects = Projects.all();
 
 
-	$scope.remove = function(project){
-		$scope.loading($ionicLoading);
+$scope.remove = function(project){
+	$scope.loading();
+	$timeout(function() {
 		$scope.projects = Projects.remove(project);
 		Projects.save($scope.projects);
 		$scope.hide($ionicLoading);
-	}
+	},2000);
+}
 
 // 	// $scope.activeProject = $scope.projects[Projects.getLastActiveindex()];
 
 $scope.newProject = function() {
 	var projectTitle = prompt('Project Name');
-	unique = true;
-	for (i in $scope.projects){
-		console.log("i==:",$scope.projects[i].title);
-		if (projectTitle === $scope.projects[i].title){
-			unique = false;
-			break;
+	var unique = true;
+	$scope.loading();
+	$timeout(function() {
+		for (i in $scope.projects){
+			if (projectTitle.toLowerCase() === $scope.projects[i].title.toLowerCase()){
+				unique = false;
+				break;
+			}
 		}
-	}
-	if(unique){
-		createProject(projectTitle);
-	}
-	else{
-		alert('Project name already exist! Try another name.');
-	}
 
+		if(unique){
+			createProject(projectTitle);
+
+		}
+		else{
+			alert('Project name already exist! Try another name.');
+		}
+		$scope.hide();
+	},2000);
 };
 
 	// $scope.selectProject = function(project, index) {
@@ -110,14 +119,14 @@ $scope.newProject = function() {
 $timeout(function(){
 	if($scope.projects.length == 0){
 		while(true){
-			var projectTitle = prompt("Enter your First Project Title");
-			if (projectTitle){
-				createProject(projectTitle);
-				break;
-			}
+			$scope.newProject();
+			break;
 		}
+
 	}
+
 }, 2000);
+$scope.hide();
 
 })
 
