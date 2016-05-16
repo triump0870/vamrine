@@ -54,25 +54,28 @@ $scope.remove = function(project){
 
 $scope.newProject = function() {
 	var projectTitle = prompt('Project Name');
-	var unique = true;
-	$scope.loading();
-	$timeout(function() {
-		for (i in $scope.projects){
-			if (projectTitle.toLowerCase() === $scope.projects[i].title.toLowerCase()){
-				unique = false;
-				break;
+	if (projectTitle) {
+		var unique = true;
+		$scope.loading();
+		$timeout(function() {
+			for (i in $scope.projects){
+				if (projectTitle.toLowerCase() === $scope.projects[i].title.toLowerCase()){
+					unique = false;
+					break;
+				}
 			}
-		}
 
-		if(unique){
-			createProject(projectTitle);
+			if(unique){
+				createProject(projectTitle);
 
-		}
-		else{
-			alert('Project name already exist! Try another name.');
-		}
-		$scope.hide();
-	},2000);
+			}
+			else{
+				alert('Project name already exist! Try another name.');
+			}
+			$scope.hide();
+		},2000);
+	}
+
 };
 
 	// $scope.selectProject = function(project, index) {

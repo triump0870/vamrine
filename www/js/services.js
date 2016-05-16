@@ -10,12 +10,9 @@ angular.module('vamrine.services', [])
   };
 
   var _project = hasProject();
-
-  console.log("Idont: ", _project); 
   return {
     all: function() {
       if(_project !== "undefined" & _project !== "null"){
-        console.log("project String: ", _project);
         return angular.fromJson(_project);
       }
       return [];

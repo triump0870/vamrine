@@ -29,7 +29,9 @@ angular.module('vamrine', ['ionic', 'vamrine.controllers', 'vamrine.services'])
 * Project.
 **/
 
-.config(function($stateProvider, $urlRouterProvider){
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
+  $ionicConfigProvider.tabs.position('bottom');
+  
   $stateProvider
 
   .state('tab', {
@@ -43,7 +45,6 @@ angular.module('vamrine', ['ionic', 'vamrine.controllers', 'vamrine.services'])
   // Each tab has its own nav history stack:
 
   .state('tab.dash', {
-    cache: false,
     url: '/dash',
     views: {
       'tab-dash': {
@@ -54,7 +55,6 @@ angular.module('vamrine', ['ionic', 'vamrine.controllers', 'vamrine.services'])
   })
 
   .state('tab.projects', {
-    cache: false,
     url: '/projects',
     views: {
       'tab-projects': {
@@ -65,7 +65,7 @@ angular.module('vamrine', ['ionic', 'vamrine.controllers', 'vamrine.services'])
   })
 
   .state('tab.project-detail', {
-    cache: false,
+    back: "tab.projects",
     url: '/projects/{title}',
     views: {
       'tab-projects': {
