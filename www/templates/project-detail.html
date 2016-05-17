@@ -1,6 +1,6 @@
 <ion-view view-title="{{activeProject.title | capitalize:true}}">
-  <ion-nav-buttons side="right">
-  <button class="button button-icon" ng-click="newTask()"><i class="icon ion-compose"></i></button>
+  <ion-nav-buttons  side="right">
+    <button class="button button-icon ion-compose" ng-click="newTask()"></button>
   </ion-nav-buttons>
   <ion-content>
    <!--  <ion-list style="border-bottom: none;
@@ -8,9 +8,12 @@
     <ion-item ng-repeat="task in activeProject.tasks" style=" margin: 0;
     padding: 0;list-style: none; border-bottom: 1px;"> -->
     <ion-list>
-      <ion-checkbox ng-repeat="task in activeProject.tasks" ng-model="task.checked" ng-checked="task.checked" ng-click="showPopup(task,$index)">
+    <ion-item ng-repeat="task in activeProject.tasks" ng-model="task.checked" ng-checked="task.checked" ng-click="editTask()">
         {{task.title}}
-      </ion-checkbox> 
+        <ion-option-button class="button-assertive" ng-click="remove(task)">
+          Delete
+        </ion-option-button> 
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

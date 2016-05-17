@@ -1,4 +1,4 @@
-angular.module("vamrine.controllers",[])
+angular.module("vamrine.controllers",['vamrine.services'])
 
 .filter('capitalize', function() {
 	return function(input, all) {
@@ -11,8 +11,82 @@ angular.module("vamrine.controllers",[])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('ProjectDetailCtrl', function($scope, $stateParams, Projects) {
-	$scope.activeProject = Projects.get($stateParams.title);
+.controller('ProjectDetailCtrl', function($scope, $stateParams, Projects, $ionicModal, $timeout) {
+	$scope.loading = function() {
+		$ionicLoading.show({
+			template: '<ion-spinner icon="android" class="spinner-calm"></ion-spinner>',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 500,
+			showDelay: 100
+		});
+	};
+
+	$scope.hide = function() {
+		$ionicLoading.hide();
+	};
+
+	$scope.projects = Projects.all();
+	var index = Projects.get($stateParams.title);
+	$scope.activeProject = $scope.projects[index];
+	console.log("in project details, activeProject: ", index,$scope.activeProject);
+	console.log("in project details: ", $scope.projects);
+
+	$ionicModal.fromTemplateUrl("templates/new-task.html", function(modal){
+		$scope.taskModal = modal;
+	},{
+		scope: $scope
+	})
+
+	$scope.createTask = function(task) {
+		if (!$scope.activeProject || !task){
+			return;
+		}
+		console.log("Task is: ",task.title);
+		$scope.activeProject.tasks.push({
+
+			title: task.title,
+			checked: false
+		});
+
+		$scope.projects[index] = $scope.activeProject;
+		$scope.taskModal.hide();
+
+		Projects.save($scope.projects);
+		task.title = "";
+	};
+
+	$scope.newTask = function() {
+		$scope.taskModal.show();
+	};
+
+	$scope.closeNewTask = function() {
+		$scope.taskModal.hide();
+	};
+
+	$ionicModal.fromTemplateUrl("templates/edit-task.html", function(modal){
+		$scope.editTaskModal = modal;
+	},{
+		scope: $scope
+	})
+
+
+	$scope.editTask = fucntion() {
+		$scope.editTaskModal.show();
+	}
+
+	$scope.closeTask = function() {
+		$scope.editTaskModal.hide();
+	};
+	// $scope.remove = function(task){
+	// 	$scope.loading();
+	// 	$timeout(function() {
+	// 		$scope.activeProject.tasks
+	// 		Projects.save($scope.projects);
+	// 		$scope.hide($ionicLoading);
+	// 	},2000);
+	// }
+
 })
 
 .controller("ProjectCtrl", function($scope, Projects, $ionicLoading, $timeout, $ionicModal){
@@ -27,7 +101,7 @@ angular.module("vamrine.controllers",[])
 		});
 	};
 
-	$scope.hide = function(){
+	$scope.hide = function() {
 		$ionicLoading.hide();
 	};
 
@@ -75,50 +149,7 @@ $scope.newProject = function() {
 			$scope.hide();
 		},2000);
 	}
-
-};
-
-	// $scope.selectProject = function(project, index) {
-	// 	$scope.activeProject = project;
-	// 	// Projects.setLastActiveIndex(index);
-	// 	// $ionicSideMenuDelegate.toggleLeft(false);
-	// };
-
-// 	// Create the task modal
-// 	$ionicModal.fromTemplateUrl("templates/new-task.html", function(modal){
-// 		$scope.taskModal = modal;
-// 	},{
-// 		scope: $scope,
-
-// 	});
-// 	$scope.createTask = function(task) {
-// 		if (!$scope.activeProject || !task){
-// 			return;
-// 		}
-// 		$scope.activeProject.tasks.push({
-// 			title: task.title,
-// 			checked: false
-// 		});
-
-// 		$scope.taskModal.hide();
-
-// 		Projects.save($scope.projects);
-
-// 		task.title = "";
-// 	};
-
-// 	$scope.newTask = function() {
-// 		$scope.taskModal.show();
-// 	};
-
-// 	$scope.closeNewTask = function() {
-// 		$scope.taskModal.hide();
-// 	};
-
-// 	$scope.toggleProject = function() {
-// 		$ionicSideMenuDelegate.toggleLeft();
-// 	};
-
+}
 $timeout(function(){
 	if($scope.projects.length == 0){
 		while(true){
@@ -130,7 +161,6 @@ $timeout(function(){
 
 }, 2000);
 $scope.hide();
-
 })
 
 .controller('AccountCtrl', function($scope) {

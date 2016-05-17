@@ -1,24 +1,28 @@
 angular.module('vamrine.services', [])
 
 .factory('Projects', function(){
+
   var hasProject = function() { 
     if(window.localStorage['projects'])
-      {
-        return window.localStorage['projects']
-      }
+    {
+      return window.localStorage['projects']
+    }
     return  [];
   };
 
   var _project = hasProject();
+  console.log("_project: ",_project);
+
   return {
     all: function() {
-      if(_project !== "undefined" & _project !== "null"){
+      if(_project){
         return angular.fromJson(_project);
       }
       return [];
     },
 
     save: function(projects){
+      console.log("In save: ",projects);
       window.localStorage['projects'] = angular.toJson(projects);
     },
 
@@ -29,10 +33,12 @@ angular.module('vamrine.services', [])
     // },
     
     get: function(projectTitle) {
-      var obj = JSON.parse(_project);
-      for (i in obj){
-        if(obj[i].title === projectTitle){
-          return obj[i];
+      if(_project){
+        var obj = JSON.parse(_project);
+        for (i in obj){
+          if(obj[i].title === projectTitle){
+            return i;
+          }
         }
       }
       return null;
@@ -57,13 +63,13 @@ angular.module('vamrine.services', [])
       return obj;
     },
 
-    // getLastActiveindex: function() {
-    //   return parseInt(window.localStorage['lastActiveProject']) || 0;
-    // },
+    getLastActiveindex: function() {
+      return parseInt(window.localStorage['lastActiveProject']) || 0;
+    },
 
-    // setLastActiveIndex: function(index) {
-    //   window.localStorage['lastActiveProject'] = index;
-    // },
+    setLastActiveIndex: function(index) {
+      window.localStorage['lastActiveProject'] = index;
+    },
 
     // remove: function(task){
     //   var obj = JSON.parse(window.localStorage['projects']);

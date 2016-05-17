@@ -4,7 +4,7 @@
 </ion-nav-buttons>
 <ion-content>
   <ion-list>
-    <ion-item class="item item-icon-left item-icon-right" ng-repeat="project in projects" type="item-text-wrap" href="#/tab/projects/{{project.title}}" ui-sref-opts="{reload: true, inherit: false}">
+    <ion-item class="item item-icon-left item-icon-right" ng-repeat="project in projects" type="item-text-wrap" href="#/tab/projects/{{project.title}}">
       <i class="icon ion-ios-list-outline"></i>
       <h2>{{project.title | capitalize:true}}</h2>
 
