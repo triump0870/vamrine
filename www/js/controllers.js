@@ -26,6 +26,11 @@ angular.module("vamrine.controllers",['vamrine.services'])
 		$ionicLoading.hide();
 	};
 
+	$scope.reload = function () {
+		$scope.projects = Projects.all();
+
+	}
+
 	$scope.projects = Projects.all();
 	var index = Projects.get($stateParams.title);
 	$scope.activeProject = $scope.projects[index];
@@ -64,19 +69,25 @@ angular.module("vamrine.controllers",['vamrine.services'])
 		$scope.taskModal.hide();
 	};
 
-	$ionicModal.fromTemplateUrl("templates/edit-task.html", function(modal){
-		$scope.editTaskModal = modal;
-	},{
-		scope: $scope
-	})
-
-
-	$scope.editTask = fucntion() {
-		$scope.editTaskModal.show();
+	$scope.newField = {};
+	$scope.editing = false;
+	$scope.editAppKey = function(field) {
+		$scope.editing = $scope.activeProject.tasks.indexOf(field);
+		$scope.newField = angular.copy(field);
 	}
 
-	$scope.closeTask = function() {
-		$scope.editTaskModal.hide();
+	$scope.saveField = function(task) {
+		if ($scope.editing !== false) {
+			$scope.activeProject.tasks[$scope.editing] = task;
+			$scope.editing = false;
+		}
+		Projects.save($scope.projects);       
+	};
+	$scope.cancel = function(index) {
+		if ($scope.editing !== false) {
+			$scope.activeProject.tasks[$scope.editing] = $scope.newField;
+			$scope.editing = false;
+		}       
 	};
 	// $scope.remove = function(task){
 	// 	$scope.loading();

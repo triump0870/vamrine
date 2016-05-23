@@ -8,8 +8,12 @@
     <ion-item ng-repeat="task in activeProject.tasks" style=" margin: 0;
     padding: 0;list-style: none; border-bottom: 1px;"> -->
     <ion-list>
-    <ion-item ng-repeat="task in activeProject.tasks" ng-model="task.checked" ng-checked="task.checked" ng-click="editTask()">
-        {{task.title}}
+      <ion-item class="item" data-ng-repeat="task in activeProject.tasks">
+        <i class="icon ion-edit" type="submit" data-ng-hide="editMode" data-ng-click="editMode = true; editAppKey(task)"></i>
+        <i type="submit" data-ng-show="editMode" data-ng-click="editMode = false; saveField(task)" class="icon ion-checkmark-round"></i>
+        <i type="submit" data-ng-show="editMode" data-ng-click="editMode = false; cancel()" class="icon ion-close-round"></i>
+        <span data-ng-hide="editMode">{{task.title}}</span>
+        <input class="editTask" type="text" data-ng-show="editMode" data-ng-model="task.title" data-ng-required />
         <ion-option-button class="button-assertive" ng-click="remove(task)">
           Delete
         </ion-option-button> 

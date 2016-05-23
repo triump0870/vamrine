@@ -8,3 +8,11 @@
 .capitalize {
 	text-transform: capitalize;
 }
+
+input[type="text"].editTask {
+	width: 100%;
+	display: inline;
+	height: 20px;
+	padding-bottom: 8px;
+	padding-left: 20px;
+}
