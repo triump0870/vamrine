@@ -9,9 +9,16 @@ angular.module("vamrine.controllers",['vamrine.services'])
 
 
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope) {
+	/* Chart options */
+	$scope.options = pieChartOption();
 
-.controller('ProjectDetailCtrl', function($scope, $stateParams, Projects, $ionicModal, $timeout) {
+	/* Chart data */
+	$scope.data = dataSource($scope);
+})
+
+
+.controller('ProjectDetailCtrl', function($scope, $stateParams, Projects, $ionicModal, $timeout, $ionicLoading) {
 	$scope.loading = function() {
 		$ionicLoading.show({
 			template: '<ion-spinner icon="android" class="spinner-calm"></ion-spinner>',
@@ -89,14 +96,15 @@ angular.module("vamrine.controllers",['vamrine.services'])
 			$scope.editing = false;
 		}       
 	};
-	// $scope.remove = function(task){
-	// 	$scope.loading();
-	// 	$timeout(function() {
-	// 		$scope.activeProject.tasks
-	// 		Projects.save($scope.projects);
-	// 		$scope.hide($ionicLoading);
-	// 	},2000);
-	// }
+
+	$scope.remove = function(index){
+		$scope.loading();
+		$timeout(function() {
+			$scope.activeProject.tasks.splice(index,1)
+			Projects.save($scope.projects);
+			$scope.hide();
+		},2000);
+	}
 
 })
 
@@ -120,6 +128,7 @@ angular.module("vamrine.controllers",['vamrine.services'])
 var createProject = function(projectTitle){
 	var newProject = Projects.newProject(projectTitle);
 	$scope.projects.push(newProject);
+	console.log("in create projects", $scope.projects);
 	Projects.save($scope.projects);
 }
 
@@ -140,9 +149,11 @@ $scope.remove = function(project){
 $scope.newProject = function() {
 	var projectTitle = prompt('Project Name');
 	if (projectTitle) {
+		console.log(projectTitle);
 		var unique = true;
 		$scope.loading();
 		$timeout(function() {
+			console.log($scope.projects);
 			for (i in $scope.projects){
 				if (projectTitle.toLowerCase() === $scope.projects[i].title.toLowerCase()){
 					unique = false;
@@ -152,7 +163,6 @@ $scope.newProject = function() {
 
 			if(unique){
 				createProject(projectTitle);
-
 			}
 			else{
 				alert('Project name already exist! Try another name.');
@@ -167,9 +177,7 @@ $timeout(function(){
 			$scope.newProject();
 			break;
 		}
-
 	}
-
 }, 2000);
 $scope.hide();
 })
@@ -179,3 +187,67 @@ $scope.hide();
 		enableFriends: true
 	};
 });
+
+function pieChartOption(){
+	return {
+		chart: {
+			type: 'pieChart',
+			height: 500,
+			x: function(d){return d.label;},
+			y: function(d){return d.value;},
+			showLabels: true,
+			transitionDuration: 500,
+			labelThreshold: 0.01,
+			legend: {
+				margin: {
+					top: 5,
+					right: 35,
+					bottom: 5,
+					left: 0
+				}
+			}
+		}
+	}
+}
+
+function dataSource($scope, AuthService) {
+	// var requestData = {"login":"rakesh","password":"password"};
+	// var authReq = $http({
+	// 	url: "http://rupeex.com:8081/WealthWeb/ws/login/restLogin",
+	// 	method: "POST",
+	// 	data: {"login":"rakesh","password":"password"},
+	// 	// withCredentials: true,
+	// 	headers: {
+	// 		'Content-Type': 'application/json; charset=utf-8'
+	// 	}
+	// });
+      // Automatically syncs everywhere in realtime
+      // var auth = authReq.then(authSuccess, authFail);
+      // console.log("mera value hain",auth.setToken());
+      // console.log("mera value hain",auth);
+      // $scope.dataRef = request.then(handleSuccess, handleError);
+      // console.log("scope",$scope.dataRef);
+      
+      // $scope.data = $scope.dataRef;
+
+
+      
+  };
+
+//   function authSuccess(response) {
+//   	console.log("Auth response", response);
+//   	if (response.data.statusCode==200){
+//   		return response.data;
+//   	}
+//   	else { 
+//   		return null;
+//   	}
+//   }
+
+//   function authFail(response){
+//   	console.log("Auth Fail", response);
+//   	if(!angular.isObject(response.data) ||
+//   		! response.data.msg){
+//   		return null;
+//   }
+// }

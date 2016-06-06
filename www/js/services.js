@@ -1,28 +1,16 @@
 angular.module('vamrine.services', [])
 
 .factory('Projects', function(){
-
-  var hasProject = function() { 
-    if(window.localStorage['projects'])
-    {
-      return window.localStorage['projects']
-    }
-    return  [];
-  };
-
-  var _project = hasProject();
-  console.log("_project: ",_project);
-
   return {
     all: function() {
-      if(_project){
-        return angular.fromJson(_project);
+      if(window.localStorage['projects']){
+        return angular.fromJson(window.localStorage['projects']);
       }
       return [];
     },
 
     save: function(projects){
-      console.log("In save: ",projects);
+      console.log("in save projects",projects);
       window.localStorage['projects'] = angular.toJson(projects);
     },
 
@@ -33,8 +21,9 @@ angular.module('vamrine.services', [])
     // },
     
     get: function(projectTitle) {
-      if(_project){
-        var obj = JSON.parse(_project);
+      console.log("main",window.localStorage['projects']);
+      if(window.localStorage['projects']){
+        var obj = JSON.parse(window.localStorage['projects']);
         for (i in obj){
           if(obj[i].title === projectTitle){
             return i;
@@ -47,6 +36,7 @@ angular.module('vamrine.services', [])
 
     newProject: function(projectTitle){
       // Add a new project    
+      console.log("in newProject", projectTitle);
       return {
         title: projectTitle,
         tasks: []
@@ -54,7 +44,7 @@ angular.module('vamrine.services', [])
     },
 
     remove: function(project) {
-      var obj = JSON.parse(_project);
+      var obj = JSON.parse(window.localStorage['projects']);
       for(i in obj){
         if(obj[i].title === project.title){
           obj.splice(i,1);
@@ -84,7 +74,4 @@ angular.module('vamrine.services', [])
     //   }
     // },
   }
-});
-
-// .factory('Show', function($ionicLoading))
-
+})

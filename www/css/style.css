@@ -1,8 +1,8 @@
 /* Empty. Add your own CSS if you like */
 .fade{
-    -webkit-transition: opacity 2s; /* For Safari 3.1 to 6.0 */
-    transition: opacity 2s;
-    opacity: 0;
+	-webkit-transition: opacity 2s; /* For Safari 3.1 to 6.0 */
+	transition: opacity 2s;
+	opacity: 0;
 }
 
 .capitalize {
@@ -10,9 +10,40 @@
 }
 
 input[type="text"].editTask {
-	width: 100%;
-	display: inline;
+	display: inline-block;
 	height: 20px;
+	width: 100%;
 	padding-bottom: 8px;
 	padding-left: 20px;
+	padding-right:10%;
+}
+
+.left i.icon {
+	display: block;
+	float: left;
+	position: relative;
+	padding-right: 20px;
+}
+
+#data-table {
+	border: 1px solid #ccc;
+	display: table;
+	padding: 3px;
+}
+#data-table .data-row {
+	display: table-row;
+}
+#data-table .data-cell {
+	padding: 1px 5px;
+	border: 1px dotted #ccc;
+	margin: 3px;
+	min-height: 25px;
+	min-width: 100px;
+	cursor: pointer;
+}
+#data-table .data-cell input {
+	max-width: 100px;
+}
+.data-button {
+	padding: 5px;
 }
