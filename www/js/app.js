@@ -3,18 +3,9 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('vamrine', ['ionic','nvd3','vamrine.controllers'])
-.run(function($ionicPlatform, $http, $q) {
-  var _baseUrl = "http://localhost:8080/WealthWeb/ws/";
-  var _loginUrl = "login/restLogin";
-  var _data = {"login":"rakesh","password":"password"};
-  var _finalUrl = '';
-  var _authData = '';
-  var LOCAL_TOKEN_KEY = "JSESSIONID";
-  var _makeUrl = function() {
-    _finalUrl = _baseUrl+_loginUrl;
-    return _finalUrl;
-  }
+angular.module('vamrine', ['ionic','nvd3','vamrine.controllers', 'vamrine.services'])
+
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -27,42 +18,23 @@ angular.module('vamrine', ['ionic','nvd3','vamrine.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-
-    var req = function(){
-      _makeUrl();
-      var deferred = $q.defer();
-      $http({
-        method:"POST",
-        url: _finalUrl,
-        data: _data,
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        }
-      }).success(function(data){
-        deferred.resolve(data);
-      }).error(function(){
-        deferred.reject("An unknown error occured");
-      })
-      return deferred.promise;
-    }
-    req().then(function(data){
-      window.localStorage.setItem(LOCAL_TOKEN_KEY, data.msg);
-    },
-    function(reason){
-      window.localStorage.removeItem(LOCAL_TOKEN_KEY);
-    })
-  })
+  });
 })
+
 /**
 * The Project factory handles saving and loading projects from
 * local storage, and also lets us save and load the last active
 * Project.
 **/
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider){
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
 
-  $httpProvider.defaults.useXDomain = true;
-  $httpProvider.defaults.headers.common['X-Auth-Token'] = window.localStorage.getItem("JSESSIONID");
+    // highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
+
+    // highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
+
+    // highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
+
   $ionicConfigProvider.tabs.position('bottom');
   
   $stateProvider
@@ -119,11 +91,14 @@ angular.module('vamrine', ['ionic','nvd3','vamrine.controllers'])
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise(function ($injector, $location) {
+    var $state = $injector.get("$state");
+    $state.go("tab.dash");
+  });
 
 });
 

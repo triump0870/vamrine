@@ -1,5 +1,4 @@
 angular.module('vamrine.services', [])
-
 .factory('Projects', function(){
   return {
     all: function() {
@@ -15,9 +14,9 @@ angular.module('vamrine.services', [])
     },
 
     // update: function(projects, index) {
-    //   console.log(window.localStorage['projects'].get(index));
-    //   window.localStorage.remove(index);
-    //   window.localStorage['projects'] = angular.toJson(projects);
+    //   console.log($window.localStorage['projects'].get(index));
+    //   $window.localStorage.remove(index);
+    //   $window.localStorage['projects'] = angular.toJson(projects);
     // },
     
     get: function(projectTitle) {
@@ -60,18 +59,5 @@ angular.module('vamrine.services', [])
     setLastActiveIndex: function(index) {
       window.localStorage['lastActiveProject'] = index;
     },
-
-    // remove: function(task){
-    //   var obj = JSON.parse(window.localStorage['projects']);
-    //   console.log("In remove: ",this.getLastActiveindex());
-    //   console.log("The removed task: ", task.title);
-    //   for (i in obj[this.getLastActiveindex()].tasks){
-    //     if (obj[this.getLastActiveindex()].tasks[i].title==task.title){
-    //       obj[this.getLastActiveindex()].tasks.splice(i,1);
-    //       console.log("in remove obj:",obj);
-    //       this.save(obj);
-    //     }
-    //   }
-    // },
   }
 })

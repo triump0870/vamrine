@@ -1,4 +1,61 @@
-angular.module("vamrine.controllers",['vamrine.services'])
+TREND_LIST = [{
+	drilldown: "Trend1",
+	name: "Trend1",
+	visible: true,
+	y: 12
+}, {
+	drilldown: "Trend2",
+	name: "Trend2",
+	visible: true,
+	y: 13
+}, {
+	drilldown: "Trend3",
+	name: "Trend3",
+	visible: true,
+	y: 25
+}, {
+	drilldown: "Trend4",
+	name: "Trend4",
+	visible: true,
+	y: 50
+}]
+
+NUMBER_OF_OFFERS_BY_TREND = [{
+	id: "Trend1",
+	name: "Trend1",
+	data: [
+	["Offer1", 50],
+	["Offer2", 30],
+	["Offer3", 20]
+	]
+}, {
+	id: "Trend2",
+	name: "Trend2",
+	data: [
+	["Offer3", 20],
+	["Offer4", 10],
+	["Offer5", 40],
+	["Offer6", 30]
+	]
+}, {
+	id: "Trend3",
+	name: "Trend3",
+	data: [
+	["Offer7", 70],
+	["Offer8", 30]
+	]
+}, {
+	id: "Trend4",
+	name: "Trend4",
+	data: [
+	["Offer9", 15],
+	["Offer10", 35],
+	["Offer11", 20],
+	["Offer12", 30]
+	]
+}]
+
+angular.module("vamrine.controllers",['vamrine.services','highcharts-ng'])
 
 .filter('capitalize', function() {
 	return function(input, all) {
@@ -6,17 +63,6 @@ angular.module("vamrine.controllers",['vamrine.services'])
 		return (!!input) ? input.replace(reg, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
 	}
 })
-
-
-
-.controller('DashCtrl', function($scope) {
-	/* Chart options */
-	$scope.options = pieChartOption();
-
-	/* Chart data */
-	$scope.data = dataSource($scope);
-})
-
 
 .controller('ProjectDetailCtrl', function($scope, $stateParams, Projects, $ionicModal, $timeout, $ionicLoading) {
 	$scope.loading = function() {
@@ -186,6 +232,53 @@ $scope.hide();
 	$scope.settings = {
 		enableFriends: true
 	};
+})
+
+.controller('DashCtrl', function($scope) {
+	var chartConfig = {
+		title: {
+			text: 'Number of offers by trend'
+		},
+		subtitle: {
+			text: 'My company'
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+		},
+		options: {
+			chart: {
+				type: 'pie'
+			},
+			drilldown: {
+				series: NUMBER_OF_OFFERS_BY_TREND
+			},
+			legend: {
+				align: 'right',
+				x: -70,
+				verticalAlign: 'top',
+				y: 20,
+				floating: true,
+				backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+				borderColor: '#CCC',
+				borderWidth: 1,
+				shadow: false
+			},
+			tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+			}
+			
+		},
+		series: [{
+			name: 'Trends',
+			colorByPoint: true,
+			data: TREND_LIST
+		}]
+	};
+	$scope.chartConfig = chartConfig;
+
 });
 
 function pieChartOption(){
@@ -210,29 +303,6 @@ function pieChartOption(){
 	}
 }
 
-function dataSource($scope, AuthService) {
-	// var requestData = {"login":"rakesh","password":"password"};
-	// var authReq = $http({
-	// 	url: "http://rupeex.com:8081/WealthWeb/ws/login/restLogin",
-	// 	method: "POST",
-	// 	data: {"login":"rakesh","password":"password"},
-	// 	// withCredentials: true,
-	// 	headers: {
-	// 		'Content-Type': 'application/json; charset=utf-8'
-	// 	}
-	// });
-      // Automatically syncs everywhere in realtime
-      // var auth = authReq.then(authSuccess, authFail);
-      // console.log("mera value hain",auth.setToken());
-      // console.log("mera value hain",auth);
-      // $scope.dataRef = request.then(handleSuccess, handleError);
-      // console.log("scope",$scope.dataRef);
-      
-      // $scope.data = $scope.dataRef;
-
-
-      
-  };
 
 //   function authSuccess(response) {
 //   	console.log("Auth response", response);
