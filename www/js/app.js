@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('vamrine', ['ionic','nvd3','vamrine.controllers', 'vamrine.services'])
+angular.module('vamrine', ['ionic','vamrine.controllers', 'vamrine.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -28,12 +28,6 @@ angular.module('vamrine', ['ionic','nvd3','vamrine.controllers', 'vamrine.servic
 **/
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
-
-    // highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
-
-    // highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
-
-    // highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
 
   $ionicConfigProvider.tabs.position('bottom');
   
