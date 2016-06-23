@@ -12,7 +12,7 @@ angular.module("vamrine.controllers",['vamrine.services','highcharts-ng'])
 		deferred = $q.defer();
 		$http({
 			method: "GET",
-			url: "http://localhost:8080/WealthWeb/ws/clientOrders/repoRest/repoData4ClientHoldings?id=10_45873BDA8F933E75DD41B29C4267E034BC7E759B31FC97BB350524D1CF32DDD5"
+			url: "http://192.168.0.124:8080/WealthWeb/ws/clientOrders/repoRest/repoData4ClientHoldings?id=10_45873BDA8F933E75DD41B29C4267E034BC7E759B31FC97BB350524D1CF32DDD5"
 		}).success(function(response){
 			deferred.resolve(response);
 		}).error(function(error){
@@ -24,6 +24,7 @@ angular.module("vamrine.controllers",['vamrine.services','highcharts-ng'])
 
 .controller('DashCtrl', function($scope, DataService) {
 	DataService.getData().then(function(data){
+		console.log(data);
 		var sum = 0;
 		var ASSET_LIST = [];
 		var ITEM_BY_ASSET_FAMILY = [];
@@ -66,7 +67,20 @@ angular.module("vamrine.controllers",['vamrine.services','highcharts-ng'])
 			},
 			options: {
 				chart: {
-					type: 'pie'
+					type: 'pie',
+					events: {
+						drilldown: function(e) {
+							this.setTitle({ text: e.point.name });
+						},
+						drillup: function(e) {
+							this.setTitle({ text: 'Portfolio Summary' });
+						}
+					},
+					plotOptions: {
+						pie: {
+							size: 100
+						}
+					},
 				},
 				drilldown: {
 					series: ITEM_BY_ASSET_FAMILY
@@ -88,8 +102,9 @@ angular.module("vamrine.controllers",['vamrine.services','highcharts-ng'])
 				}
 
 			},
+
 			series: [{
-				name: 'Trends',
+				name: 'Portfolio Summary',
 				colorByPoint: true,
 				data: ASSET_LIST
 			}]
